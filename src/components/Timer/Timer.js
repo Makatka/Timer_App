@@ -2,12 +2,14 @@ import styles from './Timer.module.scss'
 import React from "react";
 
 const Timer = (props)=> {
+
+
 return (
   <div className={styles.wrapper}>
-     <span>{(props.time.h >= 10)? props.time.h : "0" + props.time.h }:</span>
-     <span>{(props.time.m >= 10)? props.time.m : "0" + props.time.m }:</span>
-     <span>{(props.time.s >= 10)? props.time.s : "0" + props.time.s }.</span>
-     <span>{(props.time.ms >= 10)? props.time.ms : "0" + props.time.ms }</span>
+    <span>{("0" + Math.floor((props.time / 3600000) % 60)).slice(-2)}:</span>
+     <span>{("0" + Math.floor((props.time / 60000) % 60)).slice(-2)}:</span>
+     <span>{("0" + Math.floor((props.time / 1000) % 60)).slice(-2)}.</span>
+     <span>{("0" + ((props.time / 10) % 100)).slice(-3)}</span>
   </div>
 )
 };

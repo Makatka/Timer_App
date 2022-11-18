@@ -1,56 +1,42 @@
 import Container from "./components/Container/Container.js"
 import Timer from "./components/Timer/Timer";
 import Controls from "./components/Controls/Controls";
+import React, {useEffect, useState} from "react";
 import Button from "./components/Button/Button";
-import React, {useState} from "react";
 
 const App = () => {
 
-  const [time, setTime] = useState({ms:0, s:0, m:0, h:0});
-  const [interv, setInterv] = useState('');
+  const [time, setTime] = useState(0);
+  const [timerOn, setTimerOn] = useState(false);
 
-  let updatedH = time.h;
-  let updatedM = time.m;
-  let updatedS = time.s;
-  let updatedMs = time.ms;
+  useEffect(() => {
+    let interval = null;
 
-  const start = () => {
-    run();
-    setInterv( setInterval(run, 10));
-  }
-  const stop = () => {
-    clearInterval(interv);
-  }
-  const reset = () => {
-    setTime({ms:0, s:0, m:0, h:0});
-  }
+    if(timerOn) {
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime + 10)
+      }, 10)
+    }else {
+      clearInterval(interval)
+    }
 
-  const run = () => {
-    if(updatedM === 60){
-      updatedH++;
-      updatedM = 0;
-    }
-    if(updatedS === 60){
-      updatedM++;
-      updatedS = 0;
-    }
-    if(updatedMs === 100){
-      updatedS++;
-      updatedMs = 0;
-    }
-    updatedMs++;
-    return setTime({ms:updatedMs, s:updatedS, m:updatedM, h:updatedH});
-  }
+    return () => clearInterval(interval)
+  }, [timerOn])
 
   return (
     <Container>
       <Timer time={time}/>
       <Controls>
-        <Button action={start}>Start</Button>
-        <Button action={stop}>Stop</Button>
-        <Button action={reset}>Reset</Button>
+        {!timerOn && (time == 0) && (
+          <Button name={"start"} action={() => setTimerOn(true)} />
+        )}
+        {time !== 0 && (
+          <Button name={"resume"} action={() => setTimerOn(true)} />
+        )}
+        <Button name={"stop"}  action={() => setTimerOn(false)} />
+        <Button name={"reset"} action={() => setTime(0)} />
       </Controls>
-    </Container>
+      </Container>
   );
 }
 
