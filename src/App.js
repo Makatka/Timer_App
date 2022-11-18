@@ -7,34 +7,37 @@ import Button from "./components/Button/Button";
 const App = () => {
 
   const [time, setTime] = useState(0);
-  const [timerOn, setTimerOn] = useState(false);
+  const [timer, setTimer] = useState(null);
+
+  const start = () => {
+    if(!timer) {
+      setTimer(setInterval(() => setTime((prev) => prev + 10), 10));
+    }
+  }
+
+  const stop = () => {
+    clearInterval(timer);
+    setTimer(null)
+  }
+
+  const reset = () => {
+    setTime(0)
+    setTimer(null)
+  }
 
   useEffect(() => {
-    let interval = null;
 
-    if(timerOn) {
-      interval = setInterval(() => {
-        setTime(prevTime => prevTime + 10)
-      }, 10)
-    }else {
-      clearInterval(interval)
-    }
-
-    return () => clearInterval(interval)
-  }, [timerOn])
+    return () => clearInterval(timer)
+  }, [timer])
 
   return (
     <Container>
       <Timer time={time}/>
       <Controls>
-        {!timerOn && (time == 0) && (
-          <Button name={"start"} action={() => setTimerOn(true)} />
-        )}
-        {time !== 0 && (
-          <Button name={"resume"} action={() => setTimerOn(true)} />
-        )}
-        <Button name={"stop"}  action={() => setTimerOn(false)} />
-        <Button name={"reset"} action={() => {setTime(0); setTimerOn(false)}} />
+        {timer === null && time == 0 && ( <Button name={"start"} action={start} />)}
+        {time !== 0 && ( <Button name={"resume"} action={start} />)}
+        <Button name={"stop"}  action={stop} />
+        <Button name={"reset"} action={reset} />
       </Controls>
       </Container>
   );
