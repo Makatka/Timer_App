@@ -34,7 +34,7 @@ const App = () => {
           <Button name={"resume"} action={() => setTimerOn(true)} />
         )}
         <Button name={"stop"}  action={() => setTimerOn(false)} />
-        <Button name={"reset"} action={() => setTime(0)} />
+        <Button name={"reset"} action={() => {setTime(0); setTimerOn(false)}} />
       </Controls>
       </Container>
   );
