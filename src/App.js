@@ -10,7 +10,7 @@ const App = () => {
   const [timer, setTimer] = useState(null);
 
   const start = () => {
-    if(!timer) {
+    if (!timer) {
       setTimer(setInterval(() => setTime((prev) => prev + 10), 10));
     }
   }
@@ -34,12 +34,12 @@ const App = () => {
     <Container>
       <Timer time={time}/>
       <Controls>
-        {timer === null && time == 0 && ( <Button name={"start"} action={start} />)}
-        {time !== 0 && ( <Button name={"resume"} action={start} />)}
-        <Button name={"stop"}  action={stop} />
-        <Button name={"reset"} action={reset} />
+        {timer === null && time === 0 && (<Button name={"start"} action={start}/>)}
+        {time !== 0 && (<Button name={"resume"} action={start}/>)}
+        <Button name={"stop"} action={stop}/>
+        <Button name={"reset"} action={reset}/>
       </Controls>
-      </Container>
+    </Container>
   );
 }
 
